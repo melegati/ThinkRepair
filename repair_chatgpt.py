@@ -28,7 +28,7 @@ os.environ["TOKENIZERS_PARALLELISM"] = "false"
 encoding_name = 'cl100k_base'
 encoding = tiktoken.get_encoding(encoding_name)
 
-client = OpenAI(api_key="")
+client = OpenAI()
 
 
 def set_seed(seed: int):
@@ -48,9 +48,11 @@ def chatgpt_encoding_count(input: str) -> int:
 
 
 def run_validation(args, file, output):
-    start = output.find("// Fixed Function")
+    start = output.find("```java")
     end = output.rfind("}") + 1
-    patch = output[start:end]
+    patch = output[start+7:end]
+    print('Patch:')
+    print(patch)
     try:
         with open(f"./Results/ChatGPT/{args.dataset}/{file}", 'w') as f:
             f.write(patch)
@@ -78,7 +80,7 @@ def request_engine(messages):
     while ret is None:
         try:
             ret = client.chat.completions.create(
-                model="gpt-3.5-turbo",
+                model="gpt-4o-mini",
                 temperature=1,
                 messages=messages
             )

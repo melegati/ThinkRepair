@@ -91,6 +91,7 @@ def run_d4j_test(source, testmethods, bug_id):
         if len(log) > 0 and log[-1].decode('utf-8') == "Failing tests: 0\n":
             print('success')
         else:
+            print(child.stderr.read())
             entire_bugg = True
 
     return compile_fail, timed_out, bugg, entire_bugg, False, log
